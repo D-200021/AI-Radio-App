@@ -1,0 +1,70 @@
+import 'package:ai_radio/pages/login_page.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+
+class ForgetPassword extends StatefulWidget {
+  ForgetPassword({Key key}) : super(key: key);
+
+  @override
+  State<ForgetPassword> createState() => _ForgetPasswordState();
+}
+
+class _ForgetPasswordState extends State<ForgetPassword> {
+
+  final forgetpassword = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: Column(
+        children: <Widget>[
+          Form(
+              child: TextFormField(
+                onChanged: (val) {
+                  setState(() {});
+                },
+                controller: forgetpassword,
+                textInputAction: TextInputAction.send,
+                autocorrect: false,
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  border:
+                      OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: "example@domain.com",
+                  labelText: "Email",
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontFamily: 'Pacifico',
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.sendPasswordResetEmail(email: forgetpassword.text);
+                setState(() {
+                  Get.to(LoginPage());
+                });
+              },
+              child: Text(
+                "Reset Password",
+                style: TextStyle(color: Colors.black),
+              ),
+              
+            ),
+        ],
+      ),
+    );
+  }
+}
